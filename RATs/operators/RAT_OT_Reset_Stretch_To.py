@@ -8,9 +8,9 @@ class RAT_OT_Reset_Stretch_To(bpy.types.Operator):
     bl_description = "Resets any \"Stretch To\" constraints"
     bl_options = {"UNDO"}
 
-	def execute(self,context):
-		for b in bpy.context.selected_pose_bones:
-			for c in b.constraints:
-				if c.name == "Stretch To":
-					c.rest_length = 0
-		return{'FINISHED'}
+    def execute(self,context):
+        for b in bpy.context.selected_pose_bones:
+            for c in b.constraints:
+                if c.name == "Stretch To":
+                    c.rest_length = 0
+        return{'FINISHED'}
