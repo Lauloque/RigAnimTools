@@ -8,26 +8,30 @@ class RAT_OT_Set_Inverse_Child_Of(bpy.types.Operator):
     bl_description = "Sets the inverse of any \"Child Of\" constraints"
     bl_options = {"UNDO"}
 
-	def execute(self,context):
-		ob = bpy.context.active_object
+    def execute(self,context):
+        obj = context.active_object
+        armature = obj.data
 
-		# Take a copy of current layers
-		org_layers = ob.data.layers[:]
+        # Take a copy of current collections and their vis
+        collections = list(armature.collections_all)
+        org_visibility = [collection.is_visible for collection in collections]
 
-		# Show all layers
-		for i in range(len(org_layers)):
-			ob.data.layers[i] = True
+        # Show all layers
+        for collection in collections:
+            collection.is_visible = True
 
-		for b in ob.pose.bones:
-			for c in b.constraints:
-				if c.type == "CHILD_OF":
-		 			context_py = bpy.context.copy()
-		 			context_py["constraint"] = c
-		 			ob.data.bones.active = b.bone
-		 			bpy.ops.constraint.childof_set_inverse(context_py,
-		 			constraint="Child Of", owner='BONE')
+        for bone in obj.pose.bones:
+            for constraint in bone.constraints:
+                if constraint.type == "CHILD_OF":
+                    obj.data.bones.active = bone.bone
 
-		# Reset back to orginal layer state
-		for i in range(len(org_layers)):
-			ob.data.layers[i] = org_layers[i]
-		return{'FINISHED'}
+                    bpy.ops.constraint.childof_set_inverse(
+                        constraint=constraint.name,
+                        owner="BONE",
+                    )
+
+        # Reset back to orginal layer state
+        for collection, visible in zip(collections, org_visibility):
+            collection.is_visible = visible
+
+        return {"FINISHED"}
