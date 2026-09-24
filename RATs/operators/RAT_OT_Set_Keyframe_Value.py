@@ -6,6 +6,7 @@ class RAT_OT_Set_Keyframe_Value(bpy.types.Operator):
     bl_idname = "object.set_keyframe_value"
     bl_label = "Set Keyframe Value"
     bl_options = {'REGISTER', 'UNDO'}
+    bl_options = {"UNDO"}
 
     my_float_y : FloatProperty(
         name="Value",

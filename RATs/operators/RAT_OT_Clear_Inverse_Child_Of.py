@@ -20,9 +20,10 @@
 import bpy
 
 class RAT_OT_Clear_Inverse_Child_Of(bpy.types.Operator):
-	bl_idname = "view3d.clear_inverse_child_of"
-	bl_label = "Clear Inverse: Child Of"
-	bl_description = "Clears the inverse of any \"Child Of\" constraints"
+    bl_idname = "view3d.clear_inverse_child_of"
+    bl_label = "Clear Inverse: Child Of"
+    bl_description = "Clears the inverse of any \"Child Of\" constraints"
+    bl_options = {"UNDO"}
 
 	def execute(self,context):
 		ob = bpy.context.active_object
